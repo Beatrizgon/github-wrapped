@@ -1,0 +1,65 @@
+/* src/components/NarrativeCard.css */
+
+.narrative-card {
+  background: var(--bg-card);
+  border: 1px solid var(--accent);
+  border-radius: 12px;
+  padding: 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+[data-theme='dark'] .narrative-card {
+  background: linear-gradient(135deg, #1a1523, #231a35);
+  border-color: #3d2e66;
+}
+
+.narrative-bg-circle {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.narrative-bg-1 {
+  top: -20px;
+  right: -20px;
+  width: 100px;
+  height: 100px;
+  background: rgba(139, 92, 246, 0.06);
+}
+
+.narrative-bg-2 {
+  bottom: -30px;
+  right: 40px;
+  width: 60px;
+  height: 60px;
+  background: rgba(139, 92, 246, 0.03);
+}
+
+.narrative-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+  position: relative;
+}
+
+.narrative-icon {
+  font-size: 20px;
+  color: var(--accent);
+}
+
+.narrative-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+.narrative-text {
+  font-size: 14px;
+  line-height: 1.7;
+  margin: 0;
+  color: var(--text-primary);
+  position: relative;
+  opacity: 0.85;
+}

@@ -1,1 +1,98 @@
-@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap'); :root { --bg-primary: #FFFFFF; --bg-card: #F8F5FF; --accent: #7C3AED; --accent-light: #8B5CF6; --text-primary: #1A1523; --text-secondary: #8672A8; --border: #E8E0F4; font-family: 'Open Sans', sans-serif; } [data-theme='dark'] { --bg-primary: #0D0B12; --bg-card: #1A1523; --accent: #8B5CF6; --accent-light: #A78BFA; --text-primary: #E8E4F0; --text-secondary: #7C6F93; --border: #2D2640; } * { margin: 0; padding: 0; box-sizing: border-box; } body { background-color: var(--bg-primary); color: var(--text-primary); font-family: 'Open Sans', sans-serif; transition: background-color 0.2s, color 0.2s; }
+/* src/styles/theme.css */
+
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap');
+
+:root {
+  --bg-primary: #ffffff;
+  --bg-card: #f8f5ff;
+  --accent: #7c3aed;
+  --accent-light: #8b5cf6;
+  --text-primary: #1a1523;
+  --text-secondary: #8672a8;
+  --border: #e8e0f4;
+  font-family: 'Open Sans', sans-serif;
+}
+
+[data-theme='dark'] {
+  --bg-primary: #0d0b12;
+  --bg-card: #1a1523;
+  --accent: #8b5cf6;
+  --accent-light: #a78bfa;
+  --text-primary: #e8e4f0;
+  --text-secondary: #7c6f93;
+  --border: #2d2640;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: 'Open Sans', sans-serif;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.material-symbols-rounded {
+  font-variation-settings:
+    'FILL' 0,
+    'wght' 400,
+    'GRAD' 0,
+    'opsz' 24;
+}
+
+.material-symbols-rounded.filled {
+  font-variation-settings:
+    'FILL' 1,
+    'wght' 400,
+    'GRAD' 0,
+    'opsz' 24;
+}
+
+/* Layout principal */
+
+.app-container {
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 8px 24px 60px;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.middle-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+/* Responsividade */
+
+@media (max-width: 768px) {
+  .stats-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .middle-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .app-container {
+    padding: 8px 16px 40px;
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+}
