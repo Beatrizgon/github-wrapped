@@ -6,7 +6,6 @@
   border-radius: 12px;
   padding: 20px;
   position: relative;
-  overflow: hidden;
 }
 
 [data-theme='dark'] .narrative-card {
@@ -42,6 +41,7 @@
   gap: 8px;
   margin-bottom: 12px;
   position: relative;
+  z-index: 1;
 }
 
 .narrative-icon {
@@ -57,9 +57,12 @@
 
 .narrative-text {
   font-size: 14px;
-  line-height: 1.7;
+  line-height: 1.8;
   margin: 0;
   color: var(--text-primary);
   position: relative;
-  opacity: 0.85;
+  z-index: 1;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  white-space: normal;
 }

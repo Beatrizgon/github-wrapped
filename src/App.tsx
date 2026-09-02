@@ -18,6 +18,7 @@ interface WrappedData {
   longestStreak: number;
   mostActiveRepo: string;
   mostActiveRepoEvents: number;
+  narrative: string;
 }
 
 function App() {
@@ -35,7 +36,7 @@ function App() {
 
     try {
       const response = await fetch(
-        `/.netlify/functions/wrapped?username=${encodeURIComponent(username)}`
+        `/.netlify/functions/wrapped?username=${encodeURIComponent(username)}&locale=${locale}`
       );
 
       if (!response.ok) {
@@ -276,7 +277,7 @@ function App() {
 
           <NarrativeCard
             title={t.narrative}
-            text={t.narrativePlaceholder}
+            text={data.narrative || t.narrativePlaceholder}
           />
         </>
       )}
