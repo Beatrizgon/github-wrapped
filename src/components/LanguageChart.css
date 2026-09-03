@@ -2,9 +2,10 @@
 
 .lang-card {
   background: var(--bg-card);
-  border: 1px solid var(--border);
+  border: 1.5px solid var(--border);
   border-radius: 12px;
   padding: 18px;
+  box-shadow: var(--shadow);
 }
 
 .lang-card-head {

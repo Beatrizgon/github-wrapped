@@ -12,11 +12,11 @@ interface LanguageChartProps {
 }
 
 const barColors = [
-  'var(--accent)',
-  'var(--accent-light)',
-  '#C4B5FD',
-  '#DDD6FE',
-  '#EDE9FE',
+  '#8B5CF6',
+  '#A78BFA',
+  '#7C3AED',
+  '#6D28D9',
+  '#5B21B6',
 ];
 
 export function LanguageChart({ title, languages }: LanguageChartProps) {

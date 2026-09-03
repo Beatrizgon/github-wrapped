@@ -1,5 +1,4 @@
 // lib/aggregate.ts
-// Lógica pura de agregação — sem chamadas externas, fácil de testar.
 
 export interface GitHubRepo {
   name: string;
@@ -7,6 +6,7 @@ export interface GitHubRepo {
   stargazers_count: number;
   fork: boolean;
   updated_at: string;
+  description?: string | null;
 }
 
 export interface GitHubEvent {
@@ -20,20 +20,22 @@ export interface LanguageStat {
   percentage: number;
 }
 
+export interface TopRepo {
+  name: string;
+  events: number;
+}
+
 export interface WrappedStats {
   publicRepos: number;
   totalCommits: number;
+  totalStars: number;
   topLanguages: LanguageStat[];
   peakHour: string;
   longestStreak: number;
-  mostActiveRepo: string;
-  mostActiveRepoEvents: number;
+  topRepos: TopRepo[];
+  weekActivity: number[];
 }
 
-/**
- * Calcula as linguagens mais usadas a partir dos repositórios.
- * Conta quantos repos usam cada linguagem (exclui forks e repos sem linguagem).
- */
 export function calcTopLanguages(repos: GitHubRepo[], limit = 5): LanguageStat[] {
   const ownRepos = repos.filter((r) => !r.fork);
 
@@ -57,17 +59,16 @@ export function calcTopLanguages(repos: GitHubRepo[], limit = 5): LanguageStat[]
     }));
 }
 
-/**
- * Conta o total de commits baseado nos PushEvents.
- */
 export function calcTotalCommits(events: GitHubEvent[]): number {
   return events.filter((e) => e.type === 'PushEvent').length;
 }
 
-/**
- * Encontra o horário com mais PushEvents (0-23).
- * Retorna string no formato "14h" ou "N/A" se não houver eventos.
- */
+export function calcTotalStars(repos: GitHubRepo[]): number {
+  return repos
+    .filter((r) => !r.fork)
+    .reduce((sum, r) => sum + r.stargazers_count, 0);
+}
+
 export function calcPeakHour(events: GitHubEvent[]): string {
   const pushEvents = events.filter((e) => e.type === 'PushEvent');
 
@@ -85,14 +86,11 @@ export function calcPeakHour(events: GitHubEvent[]): string {
   return peak ? `${peak[0]}h` : 'N/A';
 }
 
-/**
- * Encontra o repositório com mais eventos.
- * Retorna o nome e a quantidade de eventos.
- */
-export function calcMostActiveRepo(
-  events: GitHubEvent[]
-): { name: string; events: number } {
-  if (events.length === 0) return { name: 'N/A', events: 0 };
+export function calcTopRepos(
+  events: GitHubEvent[],
+  limit = 2
+): TopRepo[] {
+  if (events.length === 0) return [];
 
   const repoCount: Record<string, number> = {};
   events.forEach((e) => {
@@ -100,21 +98,30 @@ export function calcMostActiveRepo(
     repoCount[name] = (repoCount[name] || 0) + 1;
   });
 
-  const top = Object.entries(repoCount)
-    .sort((a, b) => b[1] - a[1])[0];
-
-  return top ? { name: top[0], events: top[1] } : { name: 'N/A', events: 0 };
+  return Object.entries(repoCount)
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, limit)
+    .map(([name, events]) => ({ name, events }));
 }
 
-/**
- * Calcula a maior sequência consecutiva de dias com pelo menos um PushEvent.
- */
+export function calcWeekActivity(events: GitHubEvent[]): number[] {
+  const pushEvents = events.filter((e) => e.type === 'PushEvent');
+  // [dom, seg, ter, qua, qui, sex, sab]
+  const days = [0, 0, 0, 0, 0, 0, 0];
+
+  pushEvents.forEach((e) => {
+    const day = new Date(e.created_at).getDay();
+    days[day]++;
+  });
+
+  return days;
+}
+
 export function calcLongestStreak(events: GitHubEvent[]): number {
   const pushEvents = events.filter((e) => e.type === 'PushEvent');
 
   if (pushEvents.length === 0) return 0;
 
-  // Pegar datas únicas (sem hora), ordenadas
   const uniqueDays = [
     ...new Set(
       pushEvents.map((e) => {
@@ -144,23 +151,20 @@ export function calcLongestStreak(events: GitHubEvent[]): number {
   return longest;
 }
 
-/**
- * Função principal: recebe repos e eventos brutos, retorna tudo agregado.
- */
 export function aggregateStats(
   repos: GitHubRepo[],
   events: GitHubEvent[]
 ): WrappedStats {
   const ownRepos = repos.filter((r) => !r.fork);
-  const mostActive = calcMostActiveRepo(events);
 
   return {
     publicRepos: ownRepos.length,
     totalCommits: calcTotalCommits(events),
+    totalStars: calcTotalStars(repos),
     topLanguages: calcTopLanguages(repos),
     peakHour: calcPeakHour(events),
     longestStreak: calcLongestStreak(events),
-    mostActiveRepo: mostActive.name,
-    mostActiveRepoEvents: mostActive.events,
+    topRepos: calcTopRepos(events, 2),
+    weekActivity: calcWeekActivity(events),
   };
 }

@@ -5,15 +5,16 @@
   align-items: center;
   gap: 10px;
   background: var(--bg-card);
-  border: 1px solid var(--border);
+  border: 1.5px solid var(--border);
   border-radius: 12px;
   padding: 10px 14px;
-  margin-bottom: 28px;
-  transition: border-color 0.15s ease;
+  box-shadow: var(--shadow);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 
 .search-bar:focus-within {
   border-color: var(--accent);
+  box-shadow: var(--shadow-hover);
 }
 
 .search-icon {

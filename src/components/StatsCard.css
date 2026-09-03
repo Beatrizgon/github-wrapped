@@ -2,10 +2,16 @@
 
 .stats-card {
   background: var(--bg-card);
-  border: 1px solid var(--border);
+  border: 1.5px solid var(--border);
   border-radius: 12px;
   padding: 16px;
-  transition: all 0.15s ease;
+  box-shadow: var(--shadow);
+  transition: box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.stats-card:hover {
+  box-shadow: var(--shadow-hover);
+  border-color: var(--accent);
 }
 
 .stats-card-head {

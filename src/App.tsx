@@ -6,18 +6,25 @@ import { Header } from './components/Header';
 import { UsernameForm } from './components/UsernameForm';
 import { StatsCard } from './components/StatsCard';
 import { LanguageChart } from './components/LanguageChart';
+import { WeekChart } from './components/WeekChart';
 import { NarrativeCard } from './components/NarrativeCard';
+
+interface TopRepo {
+  name: string;
+  events: number;
+}
 
 interface WrappedData {
   username: string;
   avatarUrl: string;
   publicRepos: number;
   totalCommits: number;
+  totalStars: number;
   topLanguages: { language: string; percentage: number }[];
   peakHour: string;
   longestStreak: number;
-  mostActiveRepo: string;
-  mostActiveRepoEvents: number;
+  topRepos: TopRepo[];
+  weekActivity: number[];
   narrative: string;
 }
 
@@ -61,11 +68,13 @@ function App() {
         onToggleLocale={toggleLocale}
       />
 
-      <UsernameForm
-        placeholder={t.searchPlaceholder}
-        buttonText={t.searchButton}
-        onSubmit={handleSearch}
-      />
+      <div className="search-wrapper">
+        <UsernameForm
+          placeholder={t.searchPlaceholder}
+          buttonText={t.searchButton}
+          onSubmit={handleSearch}
+        />
+      </div>
 
       {loading && (
         <div style={{
@@ -195,6 +204,12 @@ function App() {
               value={data.peakHour}
               subtitle={t.stats.peakHourDesc}
             />
+            <StatsCard
+              icon="star"
+              label={t.stats.stars}
+              value={data.totalStars}
+              subtitle={t.stats.starsDesc}
+            />
           </div>
 
           <div className="middle-grid">
@@ -226,59 +241,89 @@ function App() {
                   fontWeight: 600,
                   color: 'var(--text-primary)',
                 }}>
-                  {t.mostActive}
+                  {t.topRepos}
+                </span>
+                <span style={{
+                  fontSize: '11px',
+                  color: 'var(--text-secondary)',
+                  marginLeft: '4px',
+                }}>
+                  {t.topReposDesc}
                 </span>
               </div>
-              <div style={{
-                background: 'var(--bg-primary)',
-                border: '1px solid var(--border)',
-                borderRadius: '10px',
-                padding: '14px',
-              }}>
-                <div style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '8px',
-                  marginBottom: '8px',
-                }}>
-                  <span
-                    className="material-symbols-rounded"
-                    style={{ fontSize: '16px', color: 'var(--accent)' }}
-                  >
-                    folder_special
-                  </span>
-                  <span style={{ fontSize: '14px', fontWeight: 700 }}>
-                    {data.mostActiveRepo}
-                  </span>
-                </div>
-                <div style={{
-                  display: 'flex',
-                  gap: '16px',
-                  fontSize: '12px',
-                  color: 'var(--text-secondary)',
-                }}>
-                  <span style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '4px',
+
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                {data.topRepos.map((repo, i) => (
+                  <div key={repo.name} style={{
+                    background: 'var(--bg-primary)',
+                    border: '1px solid var(--border)',
+                    borderRadius: '10px',
+                    padding: '12px 14px',
                   }}>
-                    <span
-                      className="material-symbols-rounded"
-                      style={{ fontSize: '16px' }}
-                    >
-                      commit
-                    </span>
-                    {data.mostActiveRepoEvents} {t.mostActiveEvents}
-                  </span>
-                </div>
+                    <div style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '8px',
+                      marginBottom: '6px',
+                    }}>
+                      <span
+                        className="material-symbols-rounded"
+                        style={{ fontSize: '16px', color: 'var(--accent)' }}
+                      >
+                        {i === 0 ? 'emoji_events' : 'folder_special'}
+                      </span>
+                      <span style={{ fontSize: '13px', fontWeight: 700 }}>
+                        {repo.name}
+                      </span>
+                    </div>
+                    <div style={{
+                      display: 'flex',
+                      gap: '16px',
+                      fontSize: '12px',
+                      color: 'var(--text-secondary)',
+                    }}>
+                      <span style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '4px',
+                      }}>
+                        <span
+                          className="material-symbols-rounded"
+                          style={{ fontSize: '14px' }}
+                        >
+                          commit
+                        </span>
+                        {repo.events} {t.events}
+                      </span>
+                    </div>
+                  </div>
+                ))}
+                {data.topRepos.length === 0 && (
+                  <div style={{
+                    fontSize: '12px',
+                    color: 'var(--text-secondary)',
+                    textAlign: 'center',
+                    padding: '20px',
+                  }}>
+                    N/A
+                  </div>
+                )}
               </div>
             </div>
           </div>
 
-          <NarrativeCard
-            title={t.narrative}
-            text={data.narrative || t.narrativePlaceholder}
-          />
+          <div className="bottom-grid">
+            <WeekChart
+              title={t.weekActivity}
+              dayLabels={t.days}
+              data={data.weekActivity}
+            />
+
+            <NarrativeCard
+              title={t.narrative}
+              text={data.narrative || t.narrativePlaceholder}
+            />
+          </div>
         </>
       )}
 

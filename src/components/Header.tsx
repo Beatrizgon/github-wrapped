@@ -21,7 +21,7 @@ export function Header({
         <span className="material-symbols-rounded filled header-icon">
           terminal
         </span>
-        <span className="header-title">github wrapped</span>
+        <span className="header-title">GitHub Wrapped</span>
       </div>
 
       <div className="header-actions">

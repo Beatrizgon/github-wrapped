@@ -2,10 +2,11 @@
 
 .narrative-card {
   background: var(--bg-card);
-  border: 1px solid var(--accent);
+  border: 1.5px solid var(--accent);
   border-radius: 12px;
   padding: 20px;
   position: relative;
+  box-shadow: var(--shadow);
 }
 
 [data-theme='dark'] .narrative-card {
