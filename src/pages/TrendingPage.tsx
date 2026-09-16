@@ -1,6 +1,9 @@
 // src/pages/TrendingPage.tsx
 import { useState, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { TrendingCard } from '../components/TrendingCard';
+import { FilterBar } from '../components/FilterBar';
+import type { Period } from '../components/FilterBar';
 import type { Locale, translations } from '../i18n/translations';
 
 interface TrendingRepo {
@@ -21,7 +24,18 @@ interface TrendingPageProps {
   t: (typeof translations)[Locale];
 }
 
+const VALID_PERIODS: Period[] = ['day', 'week', 'month'];
+
 export function TrendingPage({ locale, t }: TrendingPageProps) {
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  // Ler filtros da URL (com defaults)
+  const language = searchParams.get('language') || '';
+  const periodFromUrl = searchParams.get('period') || 'week';
+  const period: Period = VALID_PERIODS.includes(periodFromUrl as Period)
+    ? (periodFromUrl as Period)
+    : 'week';
+
   const [repos, setRepos] = useState<TrendingRepo[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -29,14 +43,22 @@ export function TrendingPage({ locale, t }: TrendingPageProps) {
   const messages = {
     pt: {
       title: 'Repositórios em alta',
-      subtitle: 'Descubra o que está bombando no GitHub esta semana',
-      empty: 'Nenhum repositório encontrado.',
+      subtitle: {
+        day: 'Descubra o que está bombando no GitHub hoje',
+        week: 'Descubra o que está bombando no GitHub esta semana',
+        month: 'Descubra o que está bombando no GitHub este mês',
+      },
+      empty: 'Nenhum repositório encontrado com esses filtros.',
       loading: 'Buscando repositórios em alta...',
     },
     en: {
       title: 'Trending repositories',
-      subtitle: 'Discover what is trending on GitHub this week',
-      empty: 'No repositories found.',
+      subtitle: {
+        day: 'Discover what is trending on GitHub today',
+        week: 'Discover what is trending on GitHub this week',
+        month: 'Discover what is trending on GitHub this month',
+      },
+      empty: 'No repositories found with these filters.',
       loading: 'Fetching trending repos...',
     },
   };
@@ -46,8 +68,15 @@ export function TrendingPage({ locale, t }: TrendingPageProps) {
     const fetchTrending = async () => {
       setLoading(true);
       setError('');
+
+      const params = new URLSearchParams();
+      params.set('period', period);
+      if (language) params.set('language', language);
+
       try {
-        const response = await fetch('/.netlify/functions/trending?period=week');
+        const response = await fetch(
+          `/.netlify/functions/trending?${params.toString()}`
+        );
         if (!response.ok) throw new Error('API error');
         const data = await response.json();
         setRepos(data.repos || []);
@@ -58,13 +87,26 @@ export function TrendingPage({ locale, t }: TrendingPageProps) {
       }
     };
     fetchTrending();
-  }, [t.error]);
+  }, [language, period, t.error]);
+
+  const handleLanguageChange = (lang: string) => {
+    const next = new URLSearchParams(searchParams);
+    if (lang) next.set('language', lang);
+    else next.delete('language');
+    setSearchParams(next);
+  };
+
+  const handlePeriodChange = (p: Period) => {
+    const next = new URLSearchParams(searchParams);
+    next.set('period', p);
+    setSearchParams(next);
+  };
 
   return (
     <div>
       <div style={{
         textAlign: 'center',
-        marginBottom: '28px',
+        marginBottom: '24px',
       }}>
         <div style={{
           fontSize: '20px',
@@ -78,9 +120,17 @@ export function TrendingPage({ locale, t }: TrendingPageProps) {
           fontSize: '13px',
           color: 'var(--text-secondary)',
         }}>
-          {m.subtitle}
+          {m.subtitle[period]}
         </div>
       </div>
+
+      <FilterBar
+        locale={locale}
+        language={language}
+        period={period}
+        onLanguageChange={handleLanguageChange}
+        onPeriodChange={handlePeriodChange}
+      />
 
       {loading && (
         <div style={{
