@@ -1,0 +1,50 @@
+/* src/components/Nav.css */
+
+.main-nav {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 24px;
+  padding: 6px;
+  background: var(--bg-card);
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+  width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.nav-link {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border-radius: 8px;
+  text-decoration: none;
+  color: var(--text-secondary);
+  font-family: 'Open Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  transition: all 0.15s ease;
+  cursor: pointer;
+}
+
+.nav-link:hover {
+  color: var(--text-primary);
+  background: var(--bg-primary);
+}
+
+.nav-link-active {
+  background: var(--accent);
+  color: #ffffff !important;
+}
+
+.nav-link-active:hover {
+  background: var(--accent);
+  color: #ffffff !important;
+  opacity: 0.95;
+}
+
+.nav-icon {
+  font-size: 18px;
+}
