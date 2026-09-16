@@ -1,21 +1,37 @@
 /* src/components/TrendingCard.css */
 
 .trending-card {
-  background: var(--bg-card);
-  border: 1.5px solid var(--border);
-  border-radius: 12px;
-  padding: 18px;
-  box-shadow: var(--shadow);
+  background:
+    linear-gradient(315deg, rgba(139, 92, 246, 0.04) 0%, transparent 60%),
+    var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 20px;
   display: flex;
   flex-direction: column;
   gap: 12px;
-  transition: box-shadow 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+  backdrop-filter: blur(10px);
+  position: relative;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  transition: all 0.2s ease;
+}
+
+.trending-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(139, 92, 246, 0.5), transparent);
+  opacity: 0.6;
 }
 
 .trending-card:hover {
+  border-color: var(--border-strong);
+  transform: translateY(-3px);
   box-shadow: var(--shadow-hover);
-  border-color: var(--accent);
-  transform: translateY(-2px);
 }
 
 .trending-card-head {
@@ -25,9 +41,21 @@
   min-width: 0;
 }
 
-.trending-card-icon {
-  font-size: 18px;
+.trending-card-icon-wrap {
+  width: 28px;
+  height: 28px;
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(167, 139, 250, 0.15));
+  border: 1px solid var(--border-strong);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   flex-shrink: 0;
+}
+
+.trending-card-icon {
+  font-size: 15px;
+  color: var(--accent-light);
 }
 
 .trending-card-name {
@@ -70,14 +98,15 @@
   width: 10px;
   height: 10px;
   border-radius: 50%;
+  box-shadow: 0 0 6px currentColor;
 }
 
 .trending-card-stars {
   display: flex;
   align-items: center;
   gap: 4px;
-  color: var(--accent);
-  font-weight: 600;
+  color: var(--accent-light);
+  font-weight: 700;
 }
 
 .trending-card-star-icon {
@@ -88,15 +117,15 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  padding-top: 4px;
-  border-top: 1px solid var(--border);
   padding: 10px 0 0;
+  border-top: 1px solid var(--border);
 }
 
 .trending-card-avatar {
   width: 24px;
   height: 24px;
   border-radius: 50%;
+  border: 1.5px solid var(--border-strong);
 }
 
 .trending-card-owner-name {
@@ -121,8 +150,8 @@
   align-items: center;
   justify-content: center;
   gap: 6px;
-  padding: 9px 12px;
-  border-radius: 8px;
+  padding: 10px 12px;
+  border-radius: 10px;
   border: none;
   font-family: 'Open Sans', sans-serif;
   font-size: 12px;
@@ -134,25 +163,28 @@
 }
 
 .trending-btn-icon {
-  font-size: 15px;
+  font-size: 14px;
 }
 
 .trending-btn-secondary {
-  background: transparent;
-  border: 1.5px solid var(--border);
+  background: rgba(139, 92, 246, 0.05);
+  border: 1px solid var(--border-strong);
   color: var(--text-primary);
 }
 
 .trending-btn-secondary:hover {
   border-color: var(--accent);
-  color: var(--accent);
+  background: rgba(139, 92, 246, 0.1);
 }
 
 .trending-btn-primary {
-  background: var(--accent);
+  background: var(--gradient-accent);
   color: #ffffff;
+  font-weight: 700;
+  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.35);
 }
 
 .trending-btn-primary:hover {
-  opacity: 0.9;
+  opacity: 0.95;
+  transform: translateY(-1px);
 }

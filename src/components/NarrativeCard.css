@@ -1,64 +1,57 @@
 /* src/components/NarrativeCard.css */
 
 .narrative-card {
-  background: var(--bg-card);
-  border: 1.5px solid var(--accent);
-  border-radius: 12px;
-  padding: 20px;
+  background:
+    linear-gradient(315deg, rgba(139, 92, 246, 0.06) 0%, transparent 60%),
+    var(--bg-card);
+  border: 1px solid var(--border-strong);
+  border-radius: 14px;
+  padding: 22px 24px;
   position: relative;
+  overflow: hidden;
+  backdrop-filter: blur(10px);
   box-shadow: var(--shadow);
 }
 
-[data-theme='dark'] .narrative-card {
-  background: linear-gradient(135deg, #1a1523, #231a35);
-  border-color: #3d2e66;
-}
-
 .narrative-bg-circle {
-  position: absolute;
-  border-radius: 50%;
-  pointer-events: none;
-}
-
-.narrative-bg-1 {
-  top: -20px;
-  right: -20px;
-  width: 100px;
-  height: 100px;
-  background: rgba(139, 92, 246, 0.06);
-}
-
-.narrative-bg-2 {
-  bottom: -30px;
-  right: 40px;
-  width: 60px;
-  height: 60px;
-  background: rgba(139, 92, 246, 0.03);
+  display: none;
 }
 
 .narrative-head {
   display: flex;
   align-items: center;
-  gap: 8px;
-  margin-bottom: 12px;
+  gap: 10px;
+  margin-bottom: 14px;
   position: relative;
   z-index: 1;
 }
 
+.narrative-icon-wrap {
+  width: 32px;
+  height: 32px;
+  background: var(--gradient-accent);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.4);
+}
+
 .narrative-icon {
-  font-size: 20px;
-  color: var(--accent);
+  font-size: 18px;
+  color: #ffffff;
 }
 
 .narrative-title {
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 700;
-  color: var(--accent);
+  color: var(--accent-lighter);
+  letter-spacing: 0.5px;
 }
 
 .narrative-text {
-  font-size: 14px;
-  line-height: 1.8;
+  font-size: 15px;
+  line-height: 1.75;
   margin: 0;
   color: var(--text-primary);
   position: relative;

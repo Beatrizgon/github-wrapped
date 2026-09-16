@@ -4,25 +4,26 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 24px;
+  gap: 28px;
   flex-wrap: wrap;
   background: var(--bg-card);
-  border: 1.5px solid var(--border);
-  border-radius: 12px;
-  padding: 14px 20px;
-  margin-bottom: 24px;
-  box-shadow: var(--shadow);
+  border: 1px solid var(--border-strong);
+  border-radius: 14px;
+  padding: 14px 22px;
+  margin-bottom: 28px;
+  backdrop-filter: blur(20px);
+  box-shadow: var(--shadow-strong);
 }
 
 .filter-group {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
 }
 
 .filter-icon {
   font-size: 18px;
-  color: var(--accent);
+  color: var(--accent-light);
 }
 
 .filter-label {
@@ -33,17 +34,17 @@
 }
 
 .filter-select {
-  padding: 7px 12px;
+  padding: 8px 12px;
   border-radius: 8px;
-  border: 1.5px solid var(--border);
+  border: 1px solid var(--border-strong);
   background: var(--bg-primary);
   color: var(--text-primary);
   font-family: 'Open Sans', sans-serif;
   font-size: 13px;
   font-weight: 600;
   cursor: pointer;
-  transition: border-color 0.15s ease;
   outline: none;
+  transition: border-color 0.15s ease;
 }
 
 .filter-select:hover,
@@ -53,9 +54,9 @@
 
 .period-pills {
   display: flex;
-  gap: 4px;
+  gap: 3px;
   background: var(--bg-primary);
-  border: 1.5px solid var(--border);
+  border: 1px solid var(--border-strong);
   border-radius: 8px;
   padding: 3px;
 }
@@ -78,8 +79,10 @@
 }
 
 .period-pill-active {
-  background: var(--accent);
+  background: var(--gradient-accent);
   color: #ffffff;
+  font-weight: 700;
+  box-shadow: 0 2px 8px rgba(139, 92, 246, 0.4);
 }
 
 .period-pill-active:hover {
@@ -91,9 +94,8 @@
   .filter-bar {
     flex-direction: column;
     align-items: stretch;
-    gap: 12px;
+    gap: 14px;
   }
-
   .filter-group {
     justify-content: space-between;
   }

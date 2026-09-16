@@ -18,9 +18,9 @@ export function Header({
   return (
     <header className="header">
       <div className="header-logo">
-        <span className="material-symbols-rounded filled header-icon">
-          terminal
-        </span>
+        <div className="header-logo-icon">
+          <span className="material-symbols-rounded filled">terminal</span>
+        </div>
         <span className="header-title">GitHub Wrapped</span>
       </div>
 
@@ -37,7 +37,7 @@ export function Header({
         </button>
 
         <button
-          className="header-btn"
+          className="header-btn header-btn-icon"
           onClick={onToggleTheme}
           title={isDark ? 'Light mode' : 'Dark mode'}
         >

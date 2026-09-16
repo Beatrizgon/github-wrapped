@@ -14,7 +14,6 @@ interface TrendingCardProps {
   locale: Locale;
 }
 
-// Cores por linguagem (paleta roxa consistente)
 const langColors: Record<string, string> = {
   TypeScript: '#8B5CF6',
   JavaScript: '#A78BFA',
@@ -45,7 +44,7 @@ export function TrendingCard(props: TrendingCardProps) {
 
   const labels = {
     pt: {
-      viewRepo: 'Ver repositório',
+      viewRepo: 'Ver repo',
       generateWrap: 'Gerar wrap',
       by: 'por',
     },
@@ -57,7 +56,9 @@ export function TrendingCard(props: TrendingCardProps) {
   };
   const l = labels[props.locale];
 
-  const langColor = props.language ? langColors[props.language] || 'var(--accent)' : 'var(--text-secondary)';
+  const langColor = props.language
+    ? langColors[props.language] || 'var(--accent)'
+    : 'var(--text-secondary)';
 
   const handleGenerateWrap = () => {
     navigate(`/wrapped?u=${encodeURIComponent(props.ownerUsername)}`);
@@ -66,12 +67,11 @@ export function TrendingCard(props: TrendingCardProps) {
   return (
     <div className="trending-card">
       <div className="trending-card-head">
-        <span
-          className="material-symbols-rounded trending-card-icon"
-          style={{ color: 'var(--accent)' }}
-        >
-          folder_special
-        </span>
+        <div className="trending-card-icon-wrap">
+          <span className="material-symbols-rounded trending-card-icon">
+            folder_special
+          </span>
+        </div>
         <span className="trending-card-name">{props.fullName}</span>
       </div>
 
@@ -84,7 +84,7 @@ export function TrendingCard(props: TrendingCardProps) {
           <span className="trending-card-lang">
             <span
               className="trending-card-lang-dot"
-              style={{ background: langColor }}
+              style={{ background: langColor, color: langColor }}
             />
             {props.language}
           </span>

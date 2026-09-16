@@ -1,4 +1,5 @@
 // src/components/UsernameForm.tsx
+import { useState } from 'react';
 import './UsernameForm.css';
 
 interface UsernameFormProps {
@@ -12,16 +13,15 @@ export function UsernameForm({
   buttonText,
   onSubmit,
 }: UsernameFormProps) {
-  const handleSubmit = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter') {
-      const value = (e.target as HTMLInputElement).value.trim();
-      if (value) onSubmit(value);
-    }
+  const [value, setValue] = useState('');
+
+  const handleSubmit = () => {
+    const trimmed = value.trim();
+    if (trimmed) onSubmit(trimmed);
   };
 
-  const handleClick = () => {
-    const input = document.querySelector<HTMLInputElement>('.search-input');
-    if (input && input.value.trim()) onSubmit(input.value.trim());
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') handleSubmit();
   };
 
   return (
@@ -31,9 +31,12 @@ export function UsernameForm({
         type="text"
         className="search-input"
         placeholder={placeholder}
-        onKeyDown={handleSubmit}
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
+        onKeyDown={handleKeyDown}
       />
-      <button className="search-btn" onClick={handleClick}>
+      <button className="search-btn" onClick={handleSubmit}>
+        <span className="material-symbols-rounded filled">auto_awesome</span>
         {buttonText}
       </button>
     </div>

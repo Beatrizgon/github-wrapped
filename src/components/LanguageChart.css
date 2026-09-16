@@ -1,55 +1,60 @@
 /* src/components/LanguageChart.css */
 
 .lang-card {
-  background: var(--bg-card);
-  border: 1.5px solid var(--border);
-  border-radius: 12px;
-  padding: 18px;
+  background:
+    linear-gradient(315deg, rgba(139, 92, 246, 0.04) 0%, transparent 60%),
+    var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 20px;
+  backdrop-filter: blur(10px);
   box-shadow: var(--shadow);
 }
 
 .lang-card-head {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
   margin-bottom: 16px;
 }
 
 .lang-card-icon {
   font-size: 18px;
-  color: var(--accent);
+  color: var(--accent-light);
 }
 
 .lang-card-title {
   font-size: 13px;
-  font-weight: 600;
+  font-weight: 700;
   color: var(--text-primary);
+  letter-spacing: -0.2px;
 }
 
 .lang-list {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 14px;
 }
 
 .lang-item-row {
   display: flex;
   justify-content: space-between;
   font-size: 12px;
-  margin-bottom: 5px;
+  margin-bottom: 6px;
 }
 
 .lang-name {
   color: var(--text-primary);
-}
-
-.lang-pct {
-  color: var(--accent);
   font-weight: 600;
 }
 
+.lang-pct {
+  color: var(--accent-light);
+  font-weight: 700;
+}
+
 .lang-bar-bg {
-  height: 8px;
+  height: 6px;
   background: var(--border);
   border-radius: 4px;
   overflow: hidden;

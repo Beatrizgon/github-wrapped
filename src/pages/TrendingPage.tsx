@@ -29,7 +29,6 @@ const VALID_PERIODS: Period[] = ['day', 'week', 'month'];
 export function TrendingPage({ locale, t }: TrendingPageProps) {
   const [searchParams, setSearchParams] = useSearchParams();
 
-  // Ler filtros da URL (com defaults)
   const language = searchParams.get('language') || '';
   const periodFromUrl = searchParams.get('period') || 'week';
   const period: Period = VALID_PERIODS.includes(periodFromUrl as Period)
@@ -42,22 +41,10 @@ export function TrendingPage({ locale, t }: TrendingPageProps) {
 
   const messages = {
     pt: {
-      title: 'Repositórios em alta',
-      subtitle: {
-        day: 'Descubra o que está bombando no GitHub hoje',
-        week: 'Descubra o que está bombando no GitHub esta semana',
-        month: 'Descubra o que está bombando no GitHub este mês',
-      },
       empty: 'Nenhum repositório encontrado com esses filtros.',
       loading: 'Buscando repositórios em alta...',
     },
     en: {
-      title: 'Trending repositories',
-      subtitle: {
-        day: 'Discover what is trending on GitHub today',
-        week: 'Discover what is trending on GitHub this week',
-        month: 'Discover what is trending on GitHub this month',
-      },
       empty: 'No repositories found with these filters.',
       loading: 'Fetching trending repos...',
     },
@@ -104,26 +91,6 @@ export function TrendingPage({ locale, t }: TrendingPageProps) {
 
   return (
     <div>
-      <div style={{
-        textAlign: 'center',
-        marginBottom: '24px',
-      }}>
-        <div style={{
-          fontSize: '20px',
-          fontWeight: 700,
-          color: 'var(--text-primary)',
-          marginBottom: '6px',
-        }}>
-          {m.title}
-        </div>
-        <div style={{
-          fontSize: '13px',
-          color: 'var(--text-secondary)',
-        }}>
-          {m.subtitle[period]}
-        </div>
-      </div>
-
       <FilterBar
         locale={locale}
         language={language}
@@ -133,12 +100,7 @@ export function TrendingPage({ locale, t }: TrendingPageProps) {
       />
 
       {loading && (
-        <div style={{
-          textAlign: 'center',
-          padding: '60px 0',
-          color: 'var(--text-secondary)',
-          fontSize: '14px',
-        }}>
+        <div style={{ textAlign: 'center', padding: '60px 0', color: 'var(--text-secondary)', fontSize: '14px' }}>
           <span
             className="material-symbols-rounded"
             style={{
@@ -156,23 +118,13 @@ export function TrendingPage({ locale, t }: TrendingPageProps) {
       )}
 
       {error && !loading && (
-        <div style={{
-          textAlign: 'center',
-          padding: '60px 0',
-          color: '#ef4444',
-          fontSize: '14px',
-        }}>
+        <div style={{ textAlign: 'center', padding: '60px 0', color: '#ef4444', fontSize: '14px' }}>
           {error}
         </div>
       )}
 
       {!loading && !error && repos.length === 0 && (
-        <div style={{
-          textAlign: 'center',
-          padding: '60px 0',
-          color: 'var(--text-secondary)',
-          fontSize: '14px',
-        }}>
+        <div style={{ textAlign: 'center', padding: '60px 0', color: 'var(--text-secondary)', fontSize: '14px' }}>
           {m.empty}
         </div>
       )}

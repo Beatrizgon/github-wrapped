@@ -9,16 +9,9 @@ interface NavProps {
 
 export function Nav({ locale }: NavProps) {
   const labels = {
-    pt: {
-      wrapped: 'Meu Wrapped',
-      trending: 'Trending',
-    },
-    en: {
-      wrapped: 'My Wrapped',
-      trending: 'Trending',
-    },
+    pt: { wrapped: 'Meu Wrapped', trending: 'Trending' },
+    en: { wrapped: 'My Wrapped', trending: 'Trending' },
   };
-
   const t = labels[locale];
 
   return (
@@ -29,9 +22,7 @@ export function Nav({ locale }: NavProps) {
           isActive ? 'nav-link nav-link-active' : 'nav-link'
         }
       >
-        <span className="material-symbols-rounded nav-icon">
-          person
-        </span>
+        <span className="material-symbols-rounded nav-icon">person</span>
         {t.wrapped}
       </NavLink>
 
@@ -41,9 +32,7 @@ export function Nav({ locale }: NavProps) {
           isActive ? 'nav-link nav-link-active' : 'nav-link'
         }
       >
-        <span className="material-symbols-rounded nav-icon">
-          trending_up
-        </span>
+        <span className="material-symbols-rounded nav-icon">trending_up</span>
         {t.trending}
       </NavLink>
     </nav>

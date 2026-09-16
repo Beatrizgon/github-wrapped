@@ -32,6 +32,15 @@ interface WrappedPageProps {
   t: (typeof translations)[Locale];
 }
 
+const subtleGradientCard: React.CSSProperties = {
+  background:
+    'linear-gradient(315deg, rgba(139, 92, 246, 0.04) 0%, transparent 60%), var(--bg-card)',
+  border: '1px solid var(--border)',
+  borderRadius: '14px',
+  backdropFilter: 'blur(10px)',
+  boxShadow: 'var(--shadow)',
+};
+
 export function WrappedPage({ locale, t }: WrappedPageProps) {
   const [searchParams, setSearchParams] = useSearchParams();
   const usernameFromUrl = searchParams.get('u') || '';
@@ -52,11 +61,7 @@ export function WrappedPage({ locale, t }: WrappedPageProps) {
         const response = await fetch(
           `/.netlify/functions/wrapped?username=${encodeURIComponent(username)}&locale=${locale}`
         );
-
-        if (!response.ok) {
-          throw new Error('API error');
-        }
-
+        if (!response.ok) throw new Error('API error');
         const result: WrappedData = await response.json();
         setData(result);
       } catch {
@@ -68,15 +73,14 @@ export function WrappedPage({ locale, t }: WrappedPageProps) {
     [locale, t.error]
   );
 
-  // Se veio username na URL e ainda não buscamos por ele, dispara a busca
   useEffect(() => {
     if (usernameFromUrl && usernameFromUrl !== currentUsername) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       fetchWrapped(usernameFromUrl);
     }
   }, [usernameFromUrl, currentUsername, fetchWrapped]);
 
   const handleSearch = (username: string) => {
-    // Atualiza a URL, o useEffect acima dispara a busca
     setSearchParams({ u: username });
   };
 
@@ -91,12 +95,7 @@ export function WrappedPage({ locale, t }: WrappedPageProps) {
       </div>
 
       {loading && (
-        <div style={{
-          textAlign: 'center',
-          padding: '60px 0',
-          color: 'var(--text-secondary)',
-          fontSize: '14px',
-        }}>
+        <div style={{ textAlign: 'center', padding: '60px 0', color: 'var(--text-secondary)', fontSize: '14px' }}>
           <span
             className="material-symbols-rounded"
             style={{
@@ -114,36 +113,8 @@ export function WrappedPage({ locale, t }: WrappedPageProps) {
       )}
 
       {error && (
-        <div style={{
-          textAlign: 'center',
-          padding: '60px 0',
-          color: '#ef4444',
-          fontSize: '14px',
-        }}>
+        <div style={{ textAlign: 'center', padding: '60px 0', color: '#ef4444', fontSize: '14px' }}>
           {error}
-        </div>
-      )}
-
-      {!data && !loading && !error && (
-        <div style={{
-          textAlign: 'center',
-          padding: '80px 0',
-          color: 'var(--text-secondary)',
-          fontSize: '14px',
-        }}>
-          <span
-            className="material-symbols-rounded"
-            style={{
-              fontSize: '48px',
-              color: 'var(--accent)',
-              display: 'block',
-              marginBottom: '16px',
-              opacity: 0.4,
-            }}
-          >
-            person_search
-          </span>
-          {t.subtitle}
         </div>
       )}
 
@@ -152,50 +123,46 @@ export function WrappedPage({ locale, t }: WrappedPageProps) {
           <div style={{
             display: 'flex',
             alignItems: 'center',
-            gap: '14px',
-            marginBottom: '24px',
-            padding: '16px 18px',
-            background: 'var(--bg-card)',
-            border: '1.5px solid var(--border)',
-            borderRadius: '12px',
-            boxShadow: 'var(--shadow)',
+            gap: '16px',
+            marginBottom: '18px',
+            padding: '18px 22px',
+            ...subtleGradientCard,
           }}>
             <img
               src={data.avatarUrl}
               alt={data.username}
               style={{
-                width: '48px',
-                height: '48px',
+                width: '56px',
+                height: '56px',
                 borderRadius: '50%',
+                border: '2px solid var(--border-strong)',
               }}
             />
-            <div>
-              <div style={{ fontSize: '16px', fontWeight: 700 }}>
+            <div style={{ flex: 1 }}>
+              <div style={{ fontSize: '18px', fontWeight: 700, letterSpacing: '-0.3px' }}>
                 {data.username}
               </div>
-              <div style={{
-                fontSize: '12px',
-                color: 'var(--text-secondary)',
-                marginTop: '2px',
-              }}>
-                {t.activity} 2025 {t.to} 2026
+              <div style={{ fontSize: '12px', color: 'var(--text-secondary)', marginTop: '3px' }}>
+                {t.activity} 2025 {t.to} 2026 · <span style={{ color: 'var(--accent-light)' }}>{data.publicRepos} {t.stats.repos.toLowerCase()}</span>
               </div>
             </div>
             <div style={{
-              marginLeft: 'auto',
-              background: 'rgba(139, 92, 246, 0.12)',
-              color: 'var(--accent)',
+              padding: '6px 14px',
+              background: 'rgba(139, 92, 246, 0.15)',
+              border: '1px solid var(--border-strong)',
+              borderRadius: '100px',
               fontSize: '11px',
-              fontWeight: 600,
-              padding: '4px 10px',
-              borderRadius: '6px',
+              fontWeight: 700,
+              color: 'var(--accent-lighter)',
+              letterSpacing: '0.5px',
             }}>
-              2026 {t.wrap}
+              2026 {t.wrap.toUpperCase()}
             </div>
           </div>
 
           <div className="stats-grid">
             <StatsCard
+              featured
               icon="commit"
               label={t.stats.commits}
               value={data.totalCommits}
@@ -225,45 +192,26 @@ export function WrappedPage({ locale, t }: WrappedPageProps) {
               value={data.totalStars}
               subtitle={t.stats.starsDesc}
             />
+            <StatsCard
+              icon="calendar_month"
+              label="ANO"
+              value="2026"
+              subtitle="wrap atual"
+            />
           </div>
 
           <div className="middle-grid">
-            <LanguageChart
-              title={t.languages}
-              languages={data.topLanguages}
-            />
+            <LanguageChart title={t.languages} languages={data.topLanguages} />
 
-            <div style={{
-              background: 'var(--bg-card)',
-              border: '1.5px solid var(--border)',
-              borderRadius: '12px',
-              padding: '18px',
-              boxShadow: 'var(--shadow)',
-            }}>
-              <div style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '6px',
-                marginBottom: '16px',
-              }}>
-                <span
-                  className="material-symbols-rounded"
-                  style={{ fontSize: '18px', color: 'var(--accent)' }}
-                >
+            <div style={{ padding: '20px', ...subtleGradientCard }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '16px' }}>
+                <span className="material-symbols-rounded" style={{ fontSize: '18px', color: 'var(--accent-light)' }}>
                   star
                 </span>
-                <span style={{
-                  fontSize: '13px',
-                  fontWeight: 600,
-                  color: 'var(--text-primary)',
-                }}>
+                <span style={{ fontSize: '13px', fontWeight: 700, color: 'var(--text-primary)', letterSpacing: '-0.2px' }}>
                   {t.topRepos}
                 </span>
-                <span style={{
-                  fontSize: '11px',
-                  color: 'var(--text-secondary)',
-                  marginLeft: '4px',
-                }}>
+                <span style={{ fontSize: '11px', color: 'var(--text-secondary)', marginLeft: '4px' }}>
                   {t.topReposDesc}
                 </span>
               </div>
@@ -272,55 +220,29 @@ export function WrappedPage({ locale, t }: WrappedPageProps) {
                 {data.topRepos.map((repo, i) => (
                   <div key={repo.name} style={{
                     background: 'var(--bg-primary)',
-                    border: '1.5px solid var(--border)',
+                    border: '1px solid var(--border-strong)',
                     borderRadius: '10px',
-                    padding: '12px 14px',
+                    padding: '14px',
                   }}>
-                    <div style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '8px',
-                      marginBottom: '6px',
-                    }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
                       <span
                         className="material-symbols-rounded"
-                        style={{ fontSize: '16px', color: 'var(--accent)' }}
+                        style={{ fontSize: '16px', color: 'var(--accent-light)' }}
                       >
                         {i === 0 ? 'emoji_events' : 'folder_special'}
                       </span>
-                      <span style={{ fontSize: '13px', fontWeight: 700 }}>
-                        {repo.name}
-                      </span>
+                      <span style={{ fontSize: '13px', fontWeight: 700 }}>{repo.name}</span>
                     </div>
-                    <div style={{
-                      display: 'flex',
-                      gap: '16px',
-                      fontSize: '12px',
-                      color: 'var(--text-secondary)',
-                    }}>
-                      <span style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '4px',
-                      }}>
-                        <span
-                          className="material-symbols-rounded"
-                          style={{ fontSize: '14px' }}
-                        >
-                          commit
-                        </span>
+                    <div style={{ display: 'flex', gap: '16px', fontSize: '12px', color: 'var(--text-secondary)' }}>
+                      <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                        <span className="material-symbols-rounded" style={{ fontSize: '14px' }}>commit</span>
                         {repo.events} {t.events}
                       </span>
                     </div>
                   </div>
                 ))}
                 {data.topRepos.length === 0 && (
-                  <div style={{
-                    fontSize: '12px',
-                    color: 'var(--text-secondary)',
-                    textAlign: 'center',
-                    padding: '20px',
-                  }}>
+                  <div style={{ fontSize: '12px', color: 'var(--text-secondary)', textAlign: 'center', padding: '20px' }}>
                     N/A
                   </div>
                 )}
@@ -329,16 +251,8 @@ export function WrappedPage({ locale, t }: WrappedPageProps) {
           </div>
 
           <div className="bottom-grid">
-            <WeekChart
-              title={t.weekActivity}
-              dayLabels={t.days}
-              data={data.weekActivity}
-            />
-
-            <NarrativeCard
-              title={t.narrative}
-              text={data.narrative || t.narrativePlaceholder}
-            />
+            <WeekChart title={t.weekActivity} dayLabels={t.days} data={data.weekActivity} />
+            <NarrativeCard title={t.narrative} text={data.narrative || t.narrativePlaceholder} />
           </div>
         </>
       )}
