@@ -28,6 +28,15 @@
   font-family: 'Open Sans', sans-serif;
 }
 
+html {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+html::-webkit-scrollbar {
+  display: none;
+}
+
 [data-theme='dark'] {
   --bg-primary: #0A0810;
   --bg-secondary: #100A1A;
