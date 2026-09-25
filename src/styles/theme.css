@@ -1,8 +1,4 @@
 /* src/styles/theme.css */
-
-@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap');
-
 :root {
   /* Light mode */
   --bg-primary: #ffffff;
